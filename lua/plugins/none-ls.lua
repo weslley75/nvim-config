@@ -15,5 +15,8 @@ return {
     })
 
     vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+    vim.keymap.set("n", "<leader>lj", vim.diagnostic.goto_next, {})
+    vim.keymap.set("n", "<leader>lk", vim.diagnostic.goto_prev, {})
+    vim.keymap.set("n", "gl", vim.diagnostic.open_float, {})
   end,
 }

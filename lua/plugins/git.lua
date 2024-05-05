@@ -5,6 +5,6 @@ return {
 			current_line_blame = true,
 		})
 
-		vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", {})
+		vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { desc = "Preview hunk" })
 	end,
 }

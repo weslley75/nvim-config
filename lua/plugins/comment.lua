@@ -1,12 +1,12 @@
 return {
-	"numToStr/Comment.nvim",
-	lazy = false,
-	config = function()
-		require("Comment").setup({
-			toggler = {
-				line = "<leader>/",
-				block = "<leader>*",
-			},
+  "numToStr/Comment.nvim",
+  lazy = false,
+  config = function()
+    require("Comment").setup({
+      toggler = {
+        line = "<leader>/",
+        block = "<leader>*",
+      },
       opleader = {
         line = "<leader>/",
         block = "<leader>*",
@@ -14,7 +14,7 @@ return {
       mappings = {
         basic = true,
         extra = false,
-      }
-		})
-	end,
+      },
+    })
+  end,
 }

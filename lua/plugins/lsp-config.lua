@@ -7,10 +7,32 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    lazy = false,
+    opts = {
+      auto_install = true,
+    },
     config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "tsserver" },
+      local mason_lspconfig = require("mason-lspconfig")
+      mason_lspconfig.setup({
+        ensure_installed = {
+          "lua_ls",
+          "tsserver",
+          "eslint",
+          "psalm",
+          "kotlin_language_server",
+          "prismals",
+          "jsonls",
+        },
       })
+
+      mason_lspconfig.setup_handlers {
+        function (server_name)
+          require("lspconfig")[server_name].setup({
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+          })
+        end,
+      }
+
     end,
   },
   {
@@ -18,20 +40,45 @@ return {
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+      local function organize_imports()
+        local params = {
+          command = "_typescript.organizeImports",
+          arguments = { vim.api.nvim_buf_get_name(0) },
+          title = "",
+        }
+        vim.lsp.buf.execute_command(params)
+      end
+
       local lspconfig = require("lspconfig")
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
       })
-      -- lspconfig.tsserver.setup({
-      --  capabilities = capabilities
-      -- })
-
-      require("typescript-tools").setup({
-        settings = {
-          tsserver_plugins = {
-            "@styled/typescript-styled-plugin",
+      lspconfig.tsserver.setup({
+        capabilities = capabilities,
+        commands = {
+          OrganizeImports = {
+            organize_imports,
+            description = "Organize Imports",
           },
         },
+      })
+
+      lspconfig.eslint.setup({
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            command = "EslintFixAll",
+          })
+        end,
+      })
+
+      lspconfig.prismals.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.jsonls.setup({
+        capabilities = capabilities,
       })
 
       vim.api.nvim_create_autocmd("LspAttach", {

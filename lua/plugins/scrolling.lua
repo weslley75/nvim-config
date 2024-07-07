@@ -2,8 +2,9 @@ return {
   "declancm/cinnamon.nvim",
   config = function()
     require("cinnamon").setup({
-      extra_keymaps = true,
-      override_keymaps = true,
+      keymaps = {
+        extra = true,
+      },
     })
   end,
 }

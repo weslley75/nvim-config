@@ -16,7 +16,7 @@ return {
       mason_lspconfig.setup({
         ensure_installed = {
           "lua_ls",
-          "tsserver",
+          "ts_ls",
           "eslint",
           "psalm",
           "kotlin_language_server",
@@ -37,6 +37,11 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      "ray-x/lsp_signature.nvim",  -- Show function signatures as you type
+      "folke/neoconf.nvim",        -- Project-specific LSP settings
+      "smjonas/inc-rename.nvim",   -- Interactive rename
+    },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -53,7 +58,7 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
       })
-      lspconfig.tsserver.setup({
+      lspconfig.ts_ls.setup({
         capabilities = capabilities,
         commands = {
           OrganizeImports = {
@@ -107,6 +112,17 @@ return {
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("References"))
         end,
       })
+
+      require("lsp_signature").setup({
+        bind = true,
+        handler_opts = {
+          border = "rounded"
+        }
+      })
+      
+      -- Add nicer rename UI
+      require("inc_rename").setup()
+      vim.keymap.set("n", "<leader>lr", ":IncRename ")
     end,
   },
 }

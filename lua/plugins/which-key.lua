@@ -1,5 +1,9 @@
 return {
   "folke/which-key.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "echasnovski/mini.nvim",
+  },
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
@@ -8,24 +12,20 @@ return {
   config = function()
     local wk = require("which-key")
 
-    wk.register({
-      ["f"] = { name = "Find" },
-      ["l"] = { name = "LSP" },
-      ["d"] = { name = "Debug" },
-      ["g"] = { name = "Git" },
-      ["w"] = { name = "Workspace", label = "Workspace" },
-      ["b"] = { name = "Buffer" },
-      ["x"] = { name = "Trouble" },
-    }, {
-      prefix = "<leader>",
-    })
+    wk.add({
+      -- Leader groups
+      { "<leader>f", group = "Find" },
+      { "<leader>l", group = "LSP" },
+      { "<leader>d", group = "Debug" },
+      { "<leader>g", group = "Git" },
+      { "<leader>w", group = "Workspace" },
+      { "<leader>b", group = "Buffer" },
+      { "<leader>x", group = "Trouble" },
 
-    wk.register({
-      ["<leader>"] = { name = "Leader" },
-      ["<space>"] = { name = "Leader" },
-      ["g"] = { name = "Go to" },
-    }, {
-      prefix = "",
+      -- Non-leader groups
+      { "<leader>", group = "Leader" },
+      { "<space>", group = "Leader" },
+      { "g", group = "Go to" },
     })
   end,
 }

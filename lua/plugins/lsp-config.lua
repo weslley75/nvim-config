@@ -22,25 +22,27 @@ return {
           "kotlin_language_server",
           "prismals",
           "jsonls",
+          "intelephense",
+          "zls",
+          "rust_analyzer"
         },
       })
 
       mason_lspconfig.setup_handlers {
-        function (server_name)
+        function(server_name)
           require("lspconfig")[server_name].setup({
             capabilities = require("cmp_nvim_lsp").default_capabilities(),
           })
         end,
       }
-
     end,
   },
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "ray-x/lsp_signature.nvim",  -- Show function signatures as you type
-      "folke/neoconf.nvim",        -- Project-specific LSP settings
-      "smjonas/inc-rename.nvim",   -- Interactive rename
+      "ray-x/lsp_signature.nvim", -- Show function signatures as you type
+      "folke/neoconf.nvim",       -- Project-specific LSP settings
+      "smjonas/inc-rename.nvim",  -- Interactive rename
     },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -86,6 +88,26 @@ return {
         capabilities = capabilities,
       })
 
+      lspconfig.intelephense.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.rust_analyzer.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.zls.setup({
+        capabilities = capabilities,
+        settings = {
+          zig = {
+            checkOnSave = true,
+            -- formattingProvider = "zls", -- Usar ZLS para formatação
+            enableAutofix = true, -- Habilitar correções automáticas
+            -- path = "path/to/zls", -- Se precisar especificar um caminho customizado para o ZLS
+          }
+        }
+      })
+
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
@@ -119,7 +141,7 @@ return {
           border = "rounded"
         }
       })
-      
+
       -- Add nicer rename UI
       require("inc_rename").setup()
       vim.keymap.set("n", "<leader>lr", ":IncRename ")

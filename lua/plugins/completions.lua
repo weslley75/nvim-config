@@ -16,6 +16,7 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-nvim-lsp",
       "saadparwaiz1/cmp_luasnip",
+      "sourcegraph/sg.nvim",
     },
     event = "InsertEnter",
     config = function()
@@ -42,6 +43,7 @@ return {
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
         }),
         sources = cmp.config.sources({
+            { name = "cody" },
             { name = "nvim_lsp" },
             { name = "luasnip" },
         }, {

@@ -45,9 +45,6 @@ vim.opt.cmdheight = 1
 vim.opt.showmode = false   -- Não é necessário com lualine
 vim.opt.wrap = false       -- Desabilita quebra de linha por padrão
 
--- Comportamento do clipboard
-vim.opt.clipboard = "unnamedplus" -- Integração com o clipboard do sistema
-
 -- Para arquivos muito grandes
 vim.opt.redrawtime = 1500 -- Tempo de redesenho aumentado para arquivos grandes
 
